@@ -97,6 +97,58 @@ public class Task2_Coverage {
 		parser.parse("a");
 		assertEquals(parser.getString("output"), "");
 	}
+	
+	@Test
+	public void test_parse_strings() {
+		parser.add("output", "o", Parser.STRING);
+		parser.parse("-k-");
+		parser.parse("-daf ");
+	}
+	
+	
+	@Test(expected = RuntimeException.class)
+	public void test_isOptionValid_over_4() {
+		parser.add("output", "o", 5);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void test_isOptionValid_type_lower_1() {
+		parser.add("output", "o", 0);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void test_isOptionValid_null() {
+		parser.add(null, "o", Parser.STRING);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void test_isOptionValid_empty() {
+		parser.add("", "o", Parser.STRING);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void test_isOptionValid_shortcut_null() {
+		parser.add("sad", null, Parser.STRING);
+	}
+	
+	public void test_coverBranch() {
+		parser.add("o", "o", Parser.STRING);
+		parser.parse("o");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }
