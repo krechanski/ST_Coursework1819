@@ -168,6 +168,7 @@ private Parser parser;
 		assertEquals(parser.getBoolean("output"), true);
 	}
 	
+	
 	@Test
 	public void part1_spec5_8() {
 		parser.add("output", "o", Parser.BOOLEAN);
@@ -482,6 +483,7 @@ private Parser parser;
 	@Test
 	public void part3_spec2_4() {
 		assertEquals(parser.getBoolean("output"), false);
-	}	
+	}
+	
 	
 }
