@@ -70,6 +70,20 @@ public class Task2_Coverage {
 	}
 	
 	@Test
+	public void test_char_space() {		
+		parser.add("output", "o", Parser.STRING);
+		parser.parse("     ");
+		assertEquals(parser.getString("output"), "");
+	}
+	
+	@Test
+	public void test_char_emptyString() {		
+		parser.add("output", "o", Parser.STRING);
+		parser.parse("     a");
+		assertEquals(parser.getString("output"), "");
+	}
+	
+	@Test
 	public void test_toString() {		
 		parser.add("output", "o", Parser.STRING);
 		assertEquals(parser.toString(), "OptionMap [options=\n" + 
