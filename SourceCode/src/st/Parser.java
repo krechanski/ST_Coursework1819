@@ -217,52 +217,75 @@ public class Parser {
 	public List<Integer> getIntegerList(String option)  {
 		List<Integer> list_numbers = new ArrayList<Integer>(); 
 		String value = getString(option);
+		
+		if (value.equals("")) {
+			return list_numbers;
+		}
+		
+		// Split the string on non-number characters except hyphen
 		List<String> numbers = Arrays.asList(value.split("[^-\\d]"));
 		
+		// Initialise first number and second number in the case that the element in list numbers is a range rather than a number
 		int firstNumber=0;
 		int secondNumber=0;
 		
 		for (String n:numbers) {
+			// Ignore empty strings (a result of two separators being next to each other)
+			if (n.equals("")) {
+				continue;
+			}
+			
+			// Check if the element is a range
 			if (n.contains("-")) {
+				// Find the first number in the range
 				Pattern pattern_firstNumber = Pattern.compile("^[-]?[1-9]+");
 		        Matcher matcher_firstNumber = pattern_firstNumber.matcher(n);
 		        if(matcher_firstNumber.find()) {
 		            firstNumber = Integer.parseInt(matcher_firstNumber.group());
 		        }
 		        else {
+		        	// First number is not found
 		        	list_numbers = new ArrayList<Integer>();
 		        	return list_numbers;
 		        }
 
+		        // Find the hyphen together with the second number in the case that the second number is negative
 		        Pattern pattern_secondNumber = Pattern.compile("[-][-][1-9]+$");
 		        Matcher matcher_secondNumber = pattern_secondNumber.matcher(n);
 		        if(matcher_secondNumber.find()) {
+		        	// removes the hyphen and converts the number to a string
 		            secondNumber = Integer.parseInt(matcher_secondNumber.group()
-		            		.replaceFirst("-", ""));
+		            		.replaceFirst("-", "")); 
 		        }
 		        else {
+		        	// Find the hyphen together with the second number in the case that the second number is positive
 		        	pattern_secondNumber = Pattern.compile("[-][1-9]+$");
 			        matcher_secondNumber = pattern_secondNumber.matcher(n);
 			        if(matcher_secondNumber.find()) {
+			        	// removes the hyphen and converts the number to a string
 			            secondNumber = Integer.parseInt(matcher_secondNumber.group()
 			            		.replaceFirst("-", ""));
 			        }
 			        else {
+			        	// Second number is not found
 			        	list_numbers = new ArrayList<Integer>();
 			        	return list_numbers;
 			        }
 		        }
 		        
+		        // Add the numbers in the range to the list
 		        for (int i=Math.min(firstNumber, secondNumber); i<=Math.max(firstNumber, secondNumber); i++) {
 		        	list_numbers.add(i);
 		        }
 			}
 			
 			else {
+				// If the element doesn't contain a hyphen then it is a number and we add it to the list
 				list_numbers.add(Integer.parseInt(n));
 			}
 		}
 		
+		// Sort the list in ascending order
 		Collections.sort(list_numbers);
 		
 		return list_numbers;
