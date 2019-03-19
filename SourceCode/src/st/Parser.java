@@ -1,6 +1,12 @@
 package st;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Parser {
 	public static final int INTEGER = 1;
@@ -203,6 +209,63 @@ public class Parser {
 	@Override
 	public String toString() {
 		return optionMap.toString();
+	}
+	
+	/*
+	 * Task 3 function
+	 */
+	public List<Integer> getIntegerList(String option)  {
+		List<Integer> list_numbers = new ArrayList<Integer>(); 
+		String value = getString(option);
+		List<String> numbers = Arrays.asList(value.split("[^-\\d]"));
+		
+		int firstNumber=0;
+		int secondNumber=0;
+		
+		for (String n:numbers) {
+			if (n.contains("-")) {
+				Pattern pattern_firstNumber = Pattern.compile("^[-]?[1-9]+");
+		        Matcher matcher_firstNumber = pattern_firstNumber.matcher(n);
+		        if(matcher_firstNumber.find()) {
+		            firstNumber = Integer.parseInt(matcher_firstNumber.group());
+		        }
+		        else {
+		        	list_numbers = new ArrayList<Integer>();
+		        	return list_numbers;
+		        }
+
+		        Pattern pattern_secondNumber = Pattern.compile("[-][-][1-9]+$");
+		        Matcher matcher_secondNumber = pattern_secondNumber.matcher(n);
+		        if(matcher_secondNumber.find()) {
+		            secondNumber = Integer.parseInt(matcher_secondNumber.group()
+		            		.replaceFirst("-", ""));
+		        }
+		        else {
+		        	pattern_secondNumber = Pattern.compile("[-][1-9]+$");
+			        matcher_secondNumber = pattern_secondNumber.matcher(n);
+			        if(matcher_secondNumber.find()) {
+			            secondNumber = Integer.parseInt(matcher_secondNumber.group()
+			            		.replaceFirst("-", ""));
+			        }
+			        else {
+			        	list_numbers = new ArrayList<Integer>();
+			        	return list_numbers;
+			        }
+		        }
+		        
+		        for (int i=Math.min(firstNumber, secondNumber); i<=Math.max(firstNumber, secondNumber); i++) {
+		        	list_numbers.add(i);
+		        }
+			}
+			
+			else {
+				list_numbers.add(Integer.parseInt(n));
+			}
+		}
+		
+		Collections.sort(list_numbers);
+		
+		return list_numbers;
 	}
 
 }

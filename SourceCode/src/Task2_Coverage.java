@@ -135,20 +135,4 @@ public class Task2_Coverage {
 		parser.add("o", "o", Parser.STRING);
 		parser.parse("o");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 }
